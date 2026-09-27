@@ -1,7 +1,6 @@
 package io.aerodlyn.sprig.data.dao
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -12,14 +11,11 @@ import java.time.Instant
 
 @Dao
 interface PlantDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insertPlant(plant: PlantEntity): Long
 
     @Update
     suspend fun updatePlant(plant: PlantEntity)
-
-    @Delete
-    suspend fun deletePlant(plant: PlantEntity)
 
     @Query("UPDATE plants SET archived_at = :archivedAt WHERE id = :plantId")
     suspend fun archivePlant(plantId: Long, archivedAt: Instant = Instant.now())

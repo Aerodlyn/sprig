@@ -19,7 +19,7 @@ import java.time.LocalDate
         )
     ],
     indices = [
-        Index(value = ["plant_id"]),
+        Index(value = ["plant_id", "care_type"], unique = true),
         Index(value = ["next_due_on"])
     ]
 )

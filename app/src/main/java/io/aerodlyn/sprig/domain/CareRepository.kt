@@ -65,6 +65,7 @@ class CareRepositoryImpl(
         intervalDays: Int,
         firstNextDueOn: LocalDate
     ): Long {
+        require(intervalDays > 0) { "intervalDays must be greater than 0" }
         return database.withTransaction {
             val plantId = plantDao.insertPlant(plant)
             val schedule = CareScheduleEntity(

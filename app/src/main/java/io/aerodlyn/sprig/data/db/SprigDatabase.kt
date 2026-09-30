@@ -1,6 +1,8 @@
 package io.aerodlyn.sprig.data.db
 
+import android.content.Context
 import androidx.room.Database
+import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import io.aerodlyn.sprig.data.dao.CareEventDao
@@ -28,4 +30,21 @@ abstract class SprigDatabase : RoomDatabase() {
     abstract fun careScheduleDao(): CareScheduleDao
 
     abstract fun careEventDao(): CareEventDao
+
+    companion object {
+        @Volatile
+        private var INSTANCE: SprigDatabase? = null
+
+        fun getDatabase(context: Context): SprigDatabase {
+            return INSTANCE ?: synchronized(this) {
+                val instance = Room.databaseBuilder(
+                    context.applicationContext,
+                    SprigDatabase::class.java,
+                    "sprig_database"
+                ).build()
+                INSTANCE = instance
+                instance
+            }
+        }
+    }
 }
